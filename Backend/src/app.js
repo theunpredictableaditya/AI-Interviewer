@@ -16,7 +16,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true, limit: '16kb'}));
 
 //Routes Will Come Here
+import userRouter from './routes/user.route.js' 
 
+app.use("/api/user", userRouter);
 
 
 //global error handling middleware
