@@ -77,7 +77,45 @@ const loginUser = asyncHandler(async(req, res) => {
     .json(new apiResponse(200, doesUserExists, "User Logged In SuccessFully"))
 })
 
+/**
+ * @access Private
+ * @description Sends logged in user's data in response data
+ */
+const getMe = asyncHandler(async(req, res) => {
+    const user = req.user;
+
+    if(!user){
+        throw new apiError(403, "Cannot Provide Access");
+    }
+
+    const userData = await userModel.findById(user._id).select("-password");
+
+    if(!userData){
+        throw new apiError(403, "Cannot Access User Data");
+    }
+
+    res.status(200)
+    .json(new apiResponse(200, userData, "User Access Provided Successfully"));
+})
+
+/**
+ * @access Private
+ * @description LoggsOut User By Removing Its Access Token
+ */
+const logoutUser = asyncHandler(async(req, res) => {
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    res.status(200)
+    .clearCookie("accessToken", options)
+    .json(new apiResponse(200, "User Logout Successfully"));
+})
+
 export {
     registerUser,
-    loginUser
+    loginUser,
+    getMe,
+    logoutUser
 } 
