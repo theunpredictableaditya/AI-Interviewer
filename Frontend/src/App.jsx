@@ -1,10 +1,11 @@
 import React from 'react'
+import { RouterProvider } from 'react-router-dom';
+import { router } from './app.routes.jsx';
+import "./Styles/style.scss";
 
 const App = () => {
   return (
-    <div>
-      App AI Interviwer
-    </div>
+    <RouterProvider router={router}></RouterProvider>
   )
 }
 
