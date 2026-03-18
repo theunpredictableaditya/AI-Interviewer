@@ -1,10 +1,15 @@
 import React from 'react'
+import GetStartedPricingSection from './GetStartedPricingSection'
+import GetStartedResourcesSection from './GetStartedResourcesSection'
+import GetStartedHeroComp from './GetStartedHeroComp'
 
 const GetStartedCTA = () => {
   return (
-    <div>
-      hey
-    </div>
+    <>
+    <GetStartedHeroComp/>
+    <GetStartedResourcesSection/>
+    <GetStartedPricingSection/>
+    </>
   )
 }
 

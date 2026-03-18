@@ -5,4 +5,16 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Space Grotesk;
+    scroll-behavior: smooth;
+}
+
+.getStarted{
+    background-color: #131022;
+    height: 2965px;
+    width: 100%;
+    position: relative;
+}
+
+button{
+    cursor: pointer;
 }

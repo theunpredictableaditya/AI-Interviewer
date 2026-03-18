@@ -15,7 +15,7 @@ const GetStartedNav = () => {
             <li>Resources</li>
         </ul>
         <div className="right">
-            <button className='signIn'>SignIn</button><button className='getStarted'>Get Started</button>
+            <button className='signIn'>SignIn</button><button className='getStartedButton'>Get Started</button>
         </div>
     </nav>
   )

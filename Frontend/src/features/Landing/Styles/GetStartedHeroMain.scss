@@ -1,0 +1,94 @@
+.hero-main {
+    height: 412px;
+    width: 896px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .tag{
+        width: 136px;
+        height: 30px;
+        background-color: rgba(71, 37, 244, 0.1);
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        ul{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            li::marker{
+                color: #4725F4;
+            }
+            li{
+                color: #4725F4;
+                font-size: 12px;
+                font-weight: bold;
+                letter-spacing: 1.2px;
+            }
+        }
+    }
+
+    .heading{
+        width: 896px;
+        height: 144px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 54px;
+        font-weight: bold;
+
+        .white{
+            color: whitesmoke;
+        }
+
+        .blue{
+            color: #4725F4;
+        }
+    }
+
+    .paragraph{
+        width: 672px;
+        height: 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        color: #94A3B8;
+        font-weight: 200;
+        text-align: center;
+    }
+
+    .buttons{
+        width: 668px;
+        height: 64px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 16px;
+
+        .ctaButton{
+            padding: 16px 32px;
+            border-radius: 24px;
+            color: whitesmoke;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .blueButton{
+            background-color: #4725F4;
+            border: none;
+        }
+
+        .transButton{
+            background-color: rgba(71, 37, 244, 0.1);
+            border: 1px solid rgba(71, 37, 244, 0.2);
+        }
+    }
+}
