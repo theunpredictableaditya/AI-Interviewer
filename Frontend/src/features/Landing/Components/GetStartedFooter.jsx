@@ -6,7 +6,7 @@ import "../Styles/GetStartedFooter.scss"
 
 const GetStartedFooter = () => {
   return (
-    <footer>
+    <footer className='getStartedFooter'>
         <div className="top">
             <div className="left">
                 <img src={logo} alt="logo" />

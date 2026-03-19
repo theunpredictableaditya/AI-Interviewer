@@ -4,7 +4,7 @@ import "../Styles/GetStartedNav.scss"
 
 const GetStartedNav = () => {
   return (
-    <nav>
+    <nav className='getStartedNav'>
         <div className="left">
             <img src={logo} alt="logo" />
             <span>AI Interviewer</span>
