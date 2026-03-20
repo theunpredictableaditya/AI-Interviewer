@@ -1,59 +1,353 @@
-.login-main{
-    height: 735px;
-    width: 1024px;
-    padding-inline: 120px;
-    padding-top: 20px;
-    padding-bottom: 40px;
-    color: white;
+.login-main {
+  height: 735px;
+  width: 1024px;
+  padding-inline: 64px;
+  padding-top: 20px;
+  padding-bottom: 40px;
+  color: white;
 
-    .login-container{
-        height: 100%;
-        width: 100%;
-        background-color: rgba(29, 24, 52, 0.6);
-        border-radius: 24px;
-        display: flex;
+  .login-container {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(29, 24, 52, 0.6);
+    border-radius: 24px;
+    display: flex;
+  }
+
+  .left {
+    height: 100%;
+    width: 50%;
+    position: relative;
+
+    img {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      object-fit: cover;
+      z-index: 1;
+      border-top-left-radius: 24px;
+      border-bottom-left-radius: 24px;
     }
 
-    .left{
-        height: 100%;
-        width: 50%;
+    .blurry {
+      border-bottom-left-radius: 24px;
+      border-top-left-radius: 24px;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      z-index: 2;
+      background: linear-gradient(
+        to bottom,
+        rgba(19, 16, 34, 0),
+        rgba(19, 16, 34, 1)
+      );
+    }
+
+    .contains * {
+      z-index: 5;
+    }
+
+    .contains {
+      z-index: 5;
+      height: 100%;
+      width: 100%;
+      gap: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 50px;
+
+      .heading {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        justify-content: flex-start;
+        font-size: 30.5px;
+        font-weight: bold;
+        letter-spacing: -1;
+
+        span {
+          margin: 0;
+          padding: 0;
+        }
+      }
+
+      p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #94a3b8;
+      }
+
+      .userContainer {
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+
+        .blankUserContainer {
+          height: 40px;
+          width: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #1e293b;
+          border: 2px solid #131022;
+          border-radius: 50%;
+
+          .blankUsers {
+            height: 8px;
+            width: 8px;
+          }
+        }
+
+        .userButton {
+          height: 40px;
+          width: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 10px;
+          font-weight: bold;
+          border-radius: 40px;
+          background-color: #4725f4;
+          color: whitesmoke;
+        }
+
+        .item1 {
+          position: absolute;
+          cursor: pointer;
+        }
+
+        .item2 {
+          position: absolute;
+          left: 30px;
+          cursor: pointer;
+        }
+
+        .item3 {
+          position: absolute;
+          left: 60px;
+          cursor: pointer;
+        }
+
+        .item4 {
+          position: absolute;
+          left: 90px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .right {
+    height: 100%;
+    width: 50%;
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    // background-color: ;
+
+    .right-top {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      height: 64px;
+
+      .head {
+        width: 100%;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .description {
+        width: 100%;
+        font-size: 13px;
+        font-weight: 400;
+        color: #94a3b8;
+      }
+    }
+
+    .right-inputs {
+      width: 100%;
+      height: 355px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      .input {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        label {
+          color: whitesmoke;
+          font-size: 12px;
+          font-weight: 600;
+        }
+
+        input {
+          border-radius: 24px;
+          height: 57px;
+          padding: 17px 16px 18px 48px;
+          background-color: rgba(30, 40, 59, 0.5);
+          border: 1px solid #334155;
+          color: #475569;
+          outline: none;
+        }
+
+      }
+
+      .input-mail{
+        position: relative;
+
+        img{
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            cursor: pointer;
+        }
+    }
+    
+    .input-password{
         position: relative;
         
-        img{
-            height: 100%;
-            width: 100%;
+        .lock{
             position: absolute;
-            object-fit: cover;
+            bottom: 20px;
+            left: 20px;
+            cursor: pointer;
+
         }
 
-        .contains *{
-            z-index: 5;
+        .eye{
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+      }
+
+      .option {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .checkbox {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 12px;
+
+          input {
+            appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 8px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            cursor: pointer;
+            position: relative; /* IMPORTANT */
+          }
+
+          /* Checked state */
+          input:checked {
+            background-color: #4725f4;
+            border-color: #4725f4;
+          }
+
+          /* Tick */
+          input::after {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 7px;
+            width: 4px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            display: none;
+          }
+
+          input:checked::after {
+            display: block;
+          }
         }
 
-        .contains{
-            z-index: 5;
-            height: 100%;
-            width: 100%;
+        a {
+          text-decoration: none;
+          color: #4725f4;
+          font-size: 12px;
+          font-weight: 600;
+        }
+      }
+
+      .signIn-button{
+        width: 100%;
+        height: 56px;
+        color: whitesmoke;
+        background-color: #4725f4;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 24px;
+        gap: 8px;
+      }
+    }
+
+    .divider{
+        width: 100%;
+        height: 48px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .line{
+            height: 1px;
+            background-color: rgba(51, 65, 85, 0.5);
+            width: 35%;
+        }
+
+        span{
+            color: #64748B;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    }
+
+    .socialLogins{
+        width: 100%;
+        height: 78px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+
+        button{
+            width: 50%;
+            height: 54px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 50px;
+            gap: 8px;
+            background-color: transparent;
+            border-radius: 24px;
+            color: whitesmoke;
+            font-weight: 600;
+            border: 1px solid #334155;
 
-            .heading{
-                display: flex;
-                flex-direction: column;
-                gap: 3px;
-                justify-content: flex-start;
-                font-size: 30.5px;
-                font-weight: bold;
-                letter-spacing: -1;
+            svg{
+                height: 20px;
+                width: 20px;
             }
         }
     }
-
-    .right{
-        height: 100%;
-        width: 50%;
-    }
+  }
 }
