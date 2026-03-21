@@ -1,0 +1,32 @@
+.register-nav{
+    height: 88px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-inline: 80px;
+    justify-content: space-between;
+    color: whitesmoke;
+
+    .logo{
+        display: flex;
+        align-items: center;
+
+        img{
+            margin-top: 8px;
+            height: 40px;
+            width: 40px;
+        }
+
+        span{
+            font-size: 20px;
+            font-weight: bold;
+        }
+    }
+
+    span{
+        font-size: 14px;
+        font-weight: 600;
+        color: #94A3B8;
+        cursor: pointer;
+    }
+}

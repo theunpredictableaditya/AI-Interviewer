@@ -1,0 +1,20 @@
+.register-foot{
+    width: 100%;
+    position: absolute;
+    bottom: 4px;
+    padding-inline: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #64748B;
+    font-size: 12px;
+    font-weight: 400;
+
+    .right{
+        display: flex;
+        list-style: none;
+        gap: 24px;
+        cursor: pointer;
+    }
+
+}

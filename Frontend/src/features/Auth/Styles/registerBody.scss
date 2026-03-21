@@ -1,0 +1,169 @@
+.register-body{
+    width: 1024px;
+    height: 700px;
+    display: flex;
+    border-radius: 24px;
+    background-color: rgba(29, 24, 52, 0.6);
+    
+
+    .left {
+    height: 100%;
+    width: 50%;
+    position: relative;
+
+    img {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      object-fit: cover;
+      z-index: 1;
+      border-top-left-radius: 24px;
+      border-bottom-left-radius: 24px;
+    }
+
+    .blurry {
+      border-bottom-left-radius: 24px;
+      border-top-left-radius: 24px;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      z-index: 2;
+      background: linear-gradient(
+        to bottom,
+        rgba(19, 16, 34, 0),
+        rgba(19, 16, 34, 1)
+      );
+    }
+
+    .contains * {
+      z-index: 5;
+    }
+
+    .contains {
+      z-index: 5;
+      height: 100%;
+      width: 100%;
+      gap: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 50px;
+
+      .heading {
+        color: whitesmoke;
+        width: 100%;
+        display: flex;
+        // flex-direction: column;
+        gap: 3px;
+        justify-content: flex-start;
+        font-size: 30.5px;
+        font-weight: bold;
+        letter-spacing: -1;
+
+        span {
+          margin: 0;
+          padding: 0;
+        }
+      }
+
+      p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #94a3b8;
+      }
+
+      .userContainer {
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+
+        .blankUserContainer {
+          height: 40px;
+          width: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #1e293b;
+          border: 2px solid #131022;
+          border-radius: 50%;
+
+          .blankUsers {
+            height: 8px;
+            width: 8px;
+          }
+        }
+
+        .userButton {
+          height: 40px;
+          width: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 10px;
+          font-weight: bold;
+          border-radius: 40px;
+          background-color: #4725f4;
+          color: whitesmoke;
+        }
+
+        .item1 {
+          position: absolute;
+          cursor: pointer;
+        }
+
+        .item2 {
+          position: absolute;
+          left: 30px;
+          cursor: pointer;
+        }
+
+        .item3 {
+          position: absolute;
+          left: 60px;
+          cursor: pointer;
+        }
+
+        .item4 {
+          position: absolute;
+          left: 90px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .right{
+        width: 50%;
+        height: 100%;
+        padding-inline: 48px;
+        padding-block: 4px;
+
+        .top{
+            width: 100%;
+            font-size: 16px;
+            font-weight: 400;
+            color: #94A3B8;
+        }
+
+        .register-form{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            .name-section{
+                display: flex;
+                gap: 20px;
+
+                .username-box{
+                    width: 50%;
+                }
+                
+                .fullName-box{
+                    width: 50%;
+                }
+            }
+        }
+  }
+}
