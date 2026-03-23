@@ -6,7 +6,7 @@ const LoginFoot = () => {
   return (
     <footer className='login-foot'>
         <span>Don't have an account?</span>
-        <Link>Register for free</Link>
+        <Link to={"/register"}>Register for free</Link>
     </footer>
   )
 }

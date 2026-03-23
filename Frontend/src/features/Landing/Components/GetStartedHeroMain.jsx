@@ -1,7 +1,11 @@
 import React from "react";
 import "../Styles/GetStartedHeroMain.scss";
+import { useNavigate } from "react-router-dom";
 
 const GetStartedHeroMain = () => {
+
+  const navigate = useNavigate();
+
   return (
     <div className="hero-main">
       <div className="tag">
@@ -19,7 +23,7 @@ const GetStartedHeroMain = () => {
         networks.
       </div>
       <div className="buttons">
-        <button className="ctaButton blueButton">Get Started Free</button><button className="ctaButton transButton">Watch Demo</button>
+        <button onClick={()=>navigate("/register")} className="ctaButton blueButton">Get Started Free</button><button className="ctaButton transButton">Watch Demo</button>
       </div>
     </div>
   );

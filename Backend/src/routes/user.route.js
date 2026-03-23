@@ -14,11 +14,11 @@ router.route("/register-user").post(
 )
 
 /**
- * @route GET /api/user/login-user
+ * @route POST /api/user/login-user
  * @description Login Into Your Account
  * @access Public
  */
-router.route("/login-user").get(
+router.route("/login-user").post(
     loginUser
 )
 

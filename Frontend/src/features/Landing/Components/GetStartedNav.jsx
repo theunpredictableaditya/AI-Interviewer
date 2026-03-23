@@ -1,8 +1,11 @@
 import React from 'react'
 import logo from "../../../assets/logo.svg"
 import "../Styles/GetStartedNav.scss"
+import { useNavigate } from 'react-router-dom'
 
 const GetStartedNav = () => {
+    const navigate = useNavigate();
+
   return (
     <nav className='getStartedNav'>
         <div className="left">
@@ -15,7 +18,7 @@ const GetStartedNav = () => {
             <li>Resources</li>
         </ul>
         <div className="right">
-            <button className='signIn'>SignIn</button><button className='getStartedButton'>Get Started</button>
+            <button onClick={()=>navigate("/login")} className='signIn'>SignIn</button><button onClick={()=>navigate("/register")} className='getStartedButton'>Get Started</button>
         </div>
     </nav>
   )
