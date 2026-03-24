@@ -18,7 +18,7 @@ const LoginBody = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleLogin(email, password);
+    handleLogin({email, password});
   }
 
   if(loading){

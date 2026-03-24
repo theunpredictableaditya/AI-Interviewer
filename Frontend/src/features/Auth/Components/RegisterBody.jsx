@@ -1,10 +1,29 @@
-import React from 'react'
+import React, {useState} from 'react'
 import "../Styles/registerBody.scss"
 import loginLeft from "../../../assets/loginLeftBg.svg"
 import blankUser from "../../../assets/blankUser.svg"
 import { Link } from 'react-router-dom'
+import { useAuth } from '../Hooks/useAuth'
 
 const RegisterBody = () => {
+
+  const { loading, handleRegister} = useAuth();
+
+  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [profession, setProfession] = useState("Student");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleRegister({username, fullName, email, profession, password});
+  }
+
+  if(loading){
+    return (<main><h1>Loading...</h1></main>);
+  }
+
   return (
     <div className='register-body'>
       <div className="left">
@@ -32,31 +51,31 @@ const RegisterBody = () => {
               </div>
       <div className="right">
         <div className="top">Enter your details to get started with our AI platform.</div>
-        <form className="register-form">
+        <form onSubmit={handleSubmit} className="register-form">
             <div className="name-section">
                 <div className="username-box">
                     <label htmlFor="username">Username</label>
-                    <input id='username' type="text" placeholder='johndoe' />
+                    <input id='username' type="text" placeholder='johndoe' value={username} onChange={(e)=>setUsername(e.target.value)}/>
                 </div>
                 <div className="fullName-box">
                     <label htmlFor="fullname">Full Name</label>
-                    <input id='fullname' type="text" placeholder='John Doe' />
+                    <input id='fullname' type="text" placeholder='John Doe' value={fullName} onChange={(e)=>setFullName(e.target.value)}/>
                 </div>
             </div>
             <div className="email-section input-section">
               <label htmlFor="email">Email Address</label>
-              <input type="text" id="email" placeholder='name@surname123.com'/>
+              <input type="text" id="email" placeholder='name@surname123.com' value={email} onChange={(e)=>setEmail(e.target.value)}/>
             </div>
             <div className="profession-section input-section">
               <label htmlFor="profession">Profession</label>
-              <select name="profession" id="profession">
-                <option value="student">Student</option>
-                <option value="employee">Employee</option>
+              <select name="profession" id="profession" value={profession} onChange={(e)=>{setProfession(e.target.value); console.log(e.target.value)}}>
+                <option value="Student">Student</option>
+                <option value="Employee">Employee</option>
               </select>
             </div>
             <div className="password-section input-section">
               <label htmlFor="password">Password</label>
-              <input type="text" id="password" placeholder='............'/>
+              <input type="text" id="password" placeholder='............' value={password} onChange={(e)=>setPassword(e.target.value)}/>
             </div>
             <div className="checkbox-section">
               <input type="checkbox" />

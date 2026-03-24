@@ -51,7 +51,12 @@ const registerUser = asyncHandler(async(req, res) => {
  * @field {email, password}
  */
 const loginUser = asyncHandler(async(req, res) => {
+
+    console.log("controller  hitt");
+
     const {email, password} = req.body;
+
+    console.log(email, password);
 
     if([email, password].some(field => field?.trim() === "")){
         throw new apiError(400, "Both Email And Passwords Are Required");
