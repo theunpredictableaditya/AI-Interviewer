@@ -1,9 +1,18 @@
 import React from 'react'
+import "./layout.scss"
+import NavBar from '../features/Dashboard/Pages/NavBar'
+import SideBar from '../features/Dashboard/Pages/Sidebar'
+import Home from '../features/Dashboard/Pages/Home'
+import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
   return (
-    <div>
-      Layout
+    <div className='layout'>
+      <SideBar/>
+      <div className="right">
+        <NavBar/>
+        <Outlet/>
+      </div>
     </div>
   )
 }

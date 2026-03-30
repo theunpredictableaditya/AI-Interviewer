@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './app.routes.jsx';
 import "./Styles/style.scss";
 import { AuthProvider } from './features/Auth/auth.context.jsx';
+import { BrowserRouter } from 'react-router-dom';
 
 const App = () => {
   return (
