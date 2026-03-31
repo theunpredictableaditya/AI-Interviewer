@@ -1,0 +1,99 @@
+.top{
+    width: 100%;
+    height: 127px;
+    padding: 40px 32px;
+    color: whitesmoke;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: -1px;
+}
+
+.sidebar-activity{
+    width: 100%;
+    height: calc(100vh - 127px - 157px);
+    padding: 0px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    div{
+        width: 223px;
+        height: 44px;
+        padding: 12px 16px;
+        display: flex;
+        gap: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.35px;
+        color: #94A3B8;
+        cursor: pointer;
+
+        svg{
+            width: 20px;
+            height: 16px;
+        }
+    }
+}
+
+.bottom{
+    width: 100%;
+    height: 157px;
+    padding: 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    .profile{
+        width: 100%;
+        height: 64px;
+        padding: 12px 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        cursor: pointer;
+
+        img{
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .info{
+            display: flex;
+            flex-direction: column;
+
+            .name{
+                color: whitesmoke;
+                font-size: 12px;
+                font-weight: bold;
+            }
+
+            .job-profile{
+                color: #94A3B8;
+                font-size: 10px;
+                font-weight: 400;
+            }
+        }
+    }
+
+    .logout{
+        width: 100%;
+        display: flex;
+        gap: 12px;
+        padding: 12px 16px;
+        cursor: pointer;
+
+        svg{
+            height: 18px;
+            width: 18px;
+        }
+        span{
+            font-size: 14px;
+            font-weight: 400;
+            color: #94A3B8;
+        }
+    }
+}
