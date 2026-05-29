@@ -33,6 +33,7 @@
         .route{
             min-height: calc(100% - 103px);
             width: 100%;
+            overflow-y: auto;
         }
     }
 }

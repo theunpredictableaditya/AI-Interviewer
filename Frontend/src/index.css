@@ -3,3 +3,27 @@
     margin: 0;
     padding: 0;
 }
+
+/* Works in Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #131022; /* your main background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6c5ce7, #8e44ad);
+  border-radius: 10px;
+  border: 2px solid #131022; /* gives padding effect */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #7d6bff, #9b59b6);
+}
+
+/* Optional corner styling */
+::-webkit-scrollbar-corner {
+  background: #131022;
+}
