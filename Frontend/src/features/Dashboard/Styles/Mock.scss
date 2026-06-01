@@ -1,0 +1,119 @@
+.mock-page{
+    width: 100%;
+    height: auto;
+    padding: 32px;
+    display: flex;
+    gap: 50px;
+    justify-content: space-between;
+    align-items: center;
+
+    .left{
+        width: 646px;
+        border-radius: 12px;
+        background-color: rgba($color: #221E35, $alpha: 0.5);
+
+        .showAi{
+            width: 100%;
+            
+            .ai-image{
+                height: 537px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #0A0814;
+
+                img{
+                    width: 244px;
+                    height: 244px;
+                    border-radius: 50%;
+                }
+            }
+        }
+
+        .question{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 32px;
+
+            .topic{
+                color: #94a3b8;
+            }
+        }
+    }
+
+    .right{
+        width: 481px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .transcript-box{
+            height: 456px;
+            background-color: rgba($color: #FFFFFF, $alpha: 0.03);
+            border-radius: 12px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            
+            .topic{
+                color: #94a3b8;
+                
+                ul li::marker{
+                    color: #EF4444;
+                }
+            }
+        }
+        
+        .speaking-status{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 32px;
+            background-color: rgba($color: #FFFFFF, $alpha: 0.03);
+            border-radius: 12px;
+
+            .microphone{
+                width: 64px;
+                height: 64px;
+                background-color: #4725f4;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+
+                img{
+                    width: 17.5px;
+                    height: 23.75px;
+                }
+            }
+
+            button{
+                width: 134px;
+                height: 50px;
+                border-radius: 12px;
+                background-color: rgba($color: #4725f4, $alpha: 0.1);
+                outline: none;
+                border: 1px solid rgba($color: #4725f4, $alpha: 0.2);
+                color: whitesmoke;
+                cursor: pointer;
+                font-weight: 600;
+            }
+        }
+
+        .next-question{
+            button{
+                width: 100%;
+                height: 50px;
+                background-color: #4725f4;
+                outline: none;
+                font-weight: bold;
+                border: none;
+                border-radius: 12px;
+                color: whitesmoke;
+            }
+        }
+    }
+}
