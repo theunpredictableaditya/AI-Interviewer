@@ -2,8 +2,17 @@ import React from "react";
 import "../Styles/Mock.scss";
 import aihr from "../../../assets/aihr.svg";
 import microphone from "../../../assets/microphone.svg";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 const Mock = () => {
+
+  const { transcript } = useSpeechRecognition();
+  const startListening = () => SpeechRecognition.startListening({
+    continuous: true,
+    language: 'en-US'
+  });
+  const stopListening = () => SpeechRecognition.stopListening();
+
   return (
     <div className="mock-page route">
       <div className="left">
@@ -28,14 +37,14 @@ const Mock = () => {
             </ul>
           </div>
           <div className="transcript">
-            Live Transcript Will Be Shown Here...
+            {transcript}
           </div>
         </div>
         <div className="speaking-status">
           <div className="microphone">
             <img src={microphone} alt="microphone" />
           </div>
-          <button>START SPEAKING</button>
+          <button onClick={startListening}>START SPEAKING</button>
         </div>
         <div className="next-question">
           <button>Next Question</button>
