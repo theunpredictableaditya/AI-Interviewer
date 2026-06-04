@@ -17,7 +17,7 @@ app.use(express.urlencoded({extended: true, limit: '16kb'}));
 
 //Routes Will Come Here
 import userRouter from './routes/user.route.js';
-import pdfParseRouter from "./routes/parsePDF.route.js"; 
+import pdfParseRouter from "./routes/interview.route.js"; 
 
 app.use("/api/user", userRouter);
 app.use("/api/parse", pdfParseRouter);

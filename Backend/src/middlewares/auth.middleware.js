@@ -11,13 +11,19 @@ const verifyJWT = asyncHandler(async(req, res, next) => {
     try {
         const cookie = req.cookies?.accessToken;
     
+        // console.log(req.cookies);
+
         if(!cookie){
             throw new apiError(400, "Cannot Access Your Token");
         }
+
+        // console.log(cookie);
     
         const decodedToken = jwt.verify(cookie, process.env.TOKEN_SECRET);
+
+        // console.log(decodedToken);
     
-        const user = await userModel.findById(decodedToken?._id).select("-passowrd");
+        const user = await userModel.findById(decodedToken?._id).select("-password");
     
         if(!user){
             throw new apiError(400, "Error Occured While Verifying Access Token");

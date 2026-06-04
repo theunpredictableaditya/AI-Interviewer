@@ -5,12 +5,17 @@ import fs from "fs";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from '../utils/apiError.js';
 import { apiResponse } from '../utils/apiResponse.js';
+import { interviewModel } from "../models/interview.model.js";
 
 /**
  * @access Public 
  * @description Parses the Resume PDF to text format
 */
 const parsePDF = asyncHandler(async(req, res) => {
+    const user = req.user;
+    console.log(user);
+    const technicalQuestion = [{topic: "hello", question: "hi"}];
+    const behavioralQuestion = [{topic: "hello", question: "hi"}];
 
     if(!req.file){
         throw new apiError(400, "Error while uploading resume");
@@ -20,7 +25,14 @@ const parsePDF = asyncHandler(async(req, res) => {
 
     const result = await parser.getText();
 
-    console.log(result.text);
+    fs.unlinkSync(req.file.path);
+    
+    const interview = interviewModel.create({
+        user: user._id,
+        resumeText: result.text,
+        technicalQuestion,
+        behavioralQuestion,
+    })
 
     res
     .status(200)

@@ -68,19 +68,26 @@ const loginUser = asyncHandler(async(req, res) => {
         throw new apiError(409, "User Doesnot Exist");
     }
 
-    const isPasswordCorrect = doesUserExists.isPasswordCorrect(password);
+    const isPasswordCorrect = await doesUserExists.isPasswordCorrect(password);
 
     if(!isPasswordCorrect){
         throw new apiError(400, "Invalid Credentials");
     }
 
-    const token = doesUserExists.generateAccessToken();
+    const token = await doesUserExists.generateAccessToken();
 
-    delete doesUserExists.password;
+    const loggedInUser = await userModel
+        .findById(doesUserExists._id)
+        .select("-password")
 
     res.status(200)
-    .cookie("accessToken", token)
-    .json(new apiResponse(200, doesUserExists, "User Logged In SuccessFully"))
+    .cookie("accessToken", token, {
+        httpOnly: true,
+        secure: false, // Set to true in production with HTTPS
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    })
+    .json(new apiResponse(200, loggedInUser, "User Logged In SuccessFully"))
 })
 
 /**
@@ -111,12 +118,13 @@ const getMe = asyncHandler(async(req, res) => {
 const logoutUser = asyncHandler(async(req, res) => {
     const options = {
         httpOnly: true,
-        secure: true
+        secure: false, // Set to true in production with HTTPS
+        sameSite: 'lax'
     }
 
     res.status(200)
     .clearCookie("accessToken", options)
-    .json(new apiResponse(200, "User Logout Successfully"));
+    .json(new apiResponse(200, {}, "User Logout Successfully"));
 })
 
 export {
