@@ -6,6 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from '../utils/apiError.js';
 import { apiResponse } from '../utils/apiResponse.js';
 import { interviewModel } from "../models/interview.model.js";
+import { generateBehavioralQuestion, generateTechnicalQuestion } from "../services/ai.services.js";
 
 /**
  * @access Public 
@@ -13,17 +14,21 @@ import { interviewModel } from "../models/interview.model.js";
 */
 const parsePDF = asyncHandler(async(req, res) => {
     const user = req.user;
-    console.log(user);
-    const technicalQuestion = [{topic: "hello", question: "hi"}];
-    const behavioralQuestion = [{topic: "hello", question: "hi"}];
-
+    // console.log(user);
+    
     if(!req.file){
         throw new apiError(400, "Error while uploading resume");
     }
-
+    
     const parser = new PDFParse({url: req.file.path});
-
+    
     const result = await parser.getText();
+    
+    const technicalQuestion = await generateTechnicalQuestion(result.text);
+    const behavioralQuestion = await generateBehavioralQuestion(result.text);
+
+    console.log(technicalQuestion);
+    console.log(behavioralQuestion);
 
     fs.unlinkSync(req.file.path);
     
