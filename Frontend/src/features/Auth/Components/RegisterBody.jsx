@@ -2,12 +2,13 @@ import React, {useState} from 'react'
 import "../Styles/registerBody.scss"
 import loginLeft from "../../../assets/loginLeftBg.svg"
 import blankUser from "../../../assets/blankUser.svg"
-import { Link } from 'react-router-dom'
+import { useNavigate ,Link } from 'react-router-dom'
 import { useAuth } from '../Hooks/useAuth'
 
 const RegisterBody = () => {
 
   const { loading, handleRegister} = useAuth();
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [fullName, setFullName] = useState("");
@@ -15,9 +16,14 @@ const RegisterBody = () => {
   const [profession, setProfession] = useState("Student");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleRegister({username, fullName, email, profession, password});
+    const result = await handleRegister({username, fullName, email, profession, password});
+    if(result){
+      navigate("/dashboard/home");
+    }else{
+      navigate("/register");
+    }
   }
 
   if(loading){

@@ -10,7 +10,16 @@ export const useAuth = () => {
     setLoading(true);
     try {
       const data = await login({ email, password });
+
+      console.log(data);
+
       setUser(data.data);
+
+      if(data.statusCode === 200){
+        return true;
+      }else{
+        return false;
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -34,8 +43,16 @@ export const useAuth = () => {
             profession,
             password,
         });
+
+        console.log(data)
         
         setUser(data.data);
+
+        if(data.statusCode === 201){
+          return true;
+        }else{
+          return false;
+        }
     } catch (error) {
         console.log(error);
     } finally {

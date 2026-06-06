@@ -40,6 +40,8 @@ export const logout = async () => {
     try {
         const response = await api.get("/api/user/logout-user");
 
+        console.log(response);
+
         return response.data;
 
     } catch (error) {

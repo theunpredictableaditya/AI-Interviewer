@@ -14,7 +14,7 @@ const registerUser = asyncHandler(async(req, res) => {
     if([username, fullName, email, profession, password].some( field => field?.trim() === "")){
         throw new apiError(400, "All fields are required !!");
     }
-
+    
     const doesUserExists = await userModel.findOne({
         $or: [{
             username
@@ -22,7 +22,7 @@ const registerUser = asyncHandler(async(req, res) => {
             email
         }]
     })
-
+    
     if(doesUserExists){
         throw new apiError(409, "User Already Exists With Your Credentials");
     }

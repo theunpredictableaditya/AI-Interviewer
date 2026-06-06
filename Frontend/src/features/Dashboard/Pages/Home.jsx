@@ -1,12 +1,19 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import upload from "../../../assets/upload.svg";
 import technical from "../../../assets/technical.svg";
 import behavioral from "../../../assets/behavioral.svg";
 import mock from "../../../assets/mock.svg";
 import "../Styles/Home.scss";
+import { useAuth } from "../../Auth/Hooks/useAuth";
 
 const Home = () => {
   const fileRef = useRef(null);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    console.log(user);
+  }, [user])
+  
 
   const openFile = () => {
     fileRef.current.click();

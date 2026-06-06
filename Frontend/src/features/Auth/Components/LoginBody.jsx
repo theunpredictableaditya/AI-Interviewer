@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../Styles/loginBody.scss";
 import loginLeft from "../../../assets/loginLeftBg.svg";
 import blankUser from "../../../assets/blankUser.svg";
@@ -11,14 +11,20 @@ import { useAuth } from "../Hooks/useAuth";
 const LoginBody = () => {
 
   const {loading, handleLogin} = useAuth();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleLogin({email, password});
+    const result = await handleLogin({email, password});
+    if(result){
+      navigate("/dashboard/home");
+    }else{
+      navigate("/login");
+    }
   }
 
   if(loading){
