@@ -76,7 +76,13 @@ export const useAuth = () => {
     setLoading(true);
     try{
         const data = await getMe();
+        console.log(data);
         setUser(data.data);
+        if(data.statusCode === 200){
+        return true;
+      }else{
+        return false;
+      }
     } catch (error) {
         console.log(error);
     } finally {

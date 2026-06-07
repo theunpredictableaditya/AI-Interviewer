@@ -52,11 +52,11 @@ const registerUser = asyncHandler(async(req, res) => {
  */
 const loginUser = asyncHandler(async(req, res) => {
 
-    console.log("controller  hitt");
+    // console.log("controller  hitt");
 
     const {email, password} = req.body;
 
-    console.log(email, password);
+    // console.log(email, password);
 
     if([email, password].some(field => field?.trim() === "")){
         throw new apiError(400, "Both Email And Passwords Are Required");
@@ -84,7 +84,7 @@ const loginUser = asyncHandler(async(req, res) => {
     .cookie("accessToken", token, {
         httpOnly: true,
         secure: false, // Set to true in production with HTTPS
-        sameSite: 'lax',
+        sameSite: 'Lax',
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     })
     .json(new apiResponse(200, loggedInUser, "User Logged In SuccessFully"))
@@ -95,6 +95,9 @@ const loginUser = asyncHandler(async(req, res) => {
  * @description Sends logged in user's data in response data
  */
 const getMe = asyncHandler(async(req, res) => {
+
+    console.log("hit");
+
     const user = req.user;
 
     if(!user){

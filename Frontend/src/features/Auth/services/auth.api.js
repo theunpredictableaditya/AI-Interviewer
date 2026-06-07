@@ -50,12 +50,12 @@ export const logout = async () => {
 }
 
 export const getMe = async () => {
-    try {
+    // try {
         const response = await api.get("/api/user/get-me");
-
+        console.log(response)
         return response.data;
         
-    } catch (error) {
-        console.log(error);
-    }
+    // } catch (error) {
+    //     console.log(error);
+    // }
 }
