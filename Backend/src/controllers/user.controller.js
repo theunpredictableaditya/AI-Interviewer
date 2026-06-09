@@ -78,15 +78,19 @@ const loginUser = asyncHandler(async(req, res) => {
 
     const loggedInUser = await userModel
         .findById(doesUserExists._id)
-        .select("-password")
+        .select("-password");
+
+    const cookieOptions = {
+        httpOnly: true,
+        secure: true,
+        // process.env.NODE_ENV === "production",
+        sameSite: "None",
+        path: "/",
+        maxAge: 24 * 60 * 60 * 1000
+    };
 
     res.status(200)
-    .cookie("accessToken", token, {
-        httpOnly: true,
-        secure: false, // Set to true in production with HTTPS
-        sameSite: 'Lax',
-        maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    })
+    .cookie("accessToken", token, cookieOptions)
     .json(new apiResponse(200, loggedInUser, "User Logged In SuccessFully"))
 })
 
@@ -96,7 +100,7 @@ const loginUser = asyncHandler(async(req, res) => {
  */
 const getMe = asyncHandler(async(req, res) => {
 
-    console.log("hit");
+    // console.log("hit");
 
     const user = req.user;
 
@@ -121,12 +125,18 @@ const getMe = asyncHandler(async(req, res) => {
 const logoutUser = asyncHandler(async(req, res) => {
     const options = {
         httpOnly: true,
-        secure: false, // Set to true in production with HTTPS
-        sameSite: 'lax'
+  secure: true,
+//   process.env.NODE_ENV === "production",
+  sameSite: "None",
+  path: "/",
+  maxAge: 24 * 60 * 60 * 1000
     }
 
     res.status(200)
-    .clearCookie("accessToken", options)
+    .clearCookie("accessToken", {
+        ...options,
+        maxAge: 0
+    })
     .json(new apiResponse(200, {}, "User Logout Successfully"));
 })
 

@@ -11,7 +11,7 @@ const verifyJWT = asyncHandler(async(req, res, next) => {
     try {
         const cookie = req.cookies?.accessToken;
     
-        // console.log(req.cookies);
+        console.log(req.cookies?.accessToken);
 
         if(!cookie){
             throw new apiError(400, "Cannot Access Your Token");
