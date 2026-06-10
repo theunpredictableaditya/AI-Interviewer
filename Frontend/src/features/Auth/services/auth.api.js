@@ -57,5 +57,6 @@ export const getMe = async () => {
         
     } catch (error) {
         console.log(error);
+        throw error;
     }
 }

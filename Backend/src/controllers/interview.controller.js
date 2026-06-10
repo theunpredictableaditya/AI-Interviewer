@@ -32,7 +32,7 @@ const parsePDF = asyncHandler(async(req, res) => {
 
     fs.unlinkSync(req.file.path);
     
-    const interview = interviewModel.create({
+    const interview = await interviewModel.create({
         user: user._id,
         resumeText: result.text,
         technicalQuestion,
@@ -44,4 +44,31 @@ const parsePDF = asyncHandler(async(req, res) => {
     .json(new apiResponse(200, {text: result.text}, "PDF Parsed Successfully"));
 })
 
-export {parsePDF};
+/**
+ * @access Public
+ * @description Fetches Database to return the ai generated interview questions
+ */
+const getQuestions = asyncHandler(async(req, res) => {
+    const user = req.user;
+
+    if(!user){
+        throw new apiError(400, "Cannot Provide Access");
+    }
+
+    const interview = await interviewModel.findOne({
+        user: user._id
+    })
+
+    if(!interview){
+        throw new apiError(400, "Submit Your Resume First To Generate Questions");
+    }
+
+    res
+    .status(200)
+    .json(new apiResponse(200, interview, "Interview Questions Returned Successfully"));
+})
+
+export {
+    parsePDF,
+    getQuestions
+};

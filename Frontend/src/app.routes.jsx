@@ -7,6 +7,7 @@ import Home from './features/Dashboard/Pages/Home';
 import Technical from './features/Dashboard/Pages/Technical';
 import Behavioral from './features/Dashboard/Pages/Behavioral';
 import Mock from './features/Dashboard/Pages/Mock';
+import ProtectedRoute from './ProtectedRoute';
 
 const router = createBrowserRouter([
     {
@@ -20,7 +21,11 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <Register/>
-    },{
+    },
+    {
+        element: <ProtectedRoute/>,
+        children: [
+            {
         path: "/dashboard",
         element: <Layout/>,
         children: [
@@ -41,7 +46,9 @@ const router = createBrowserRouter([
                 element: <Mock/>
             }
         ]
-    }   
+    } 
+        ]
+    },  
 ])
 
 export {router};
