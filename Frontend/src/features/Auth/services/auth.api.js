@@ -60,3 +60,14 @@ export const getMe = async () => {
         throw error;
     }
 }
+
+export const getQuestions = async () => {
+    try{
+        const response = await api.get("/api/parse/get-questions");
+        // console.log(response);
+        return response.data;
+    } catch(error) {
+        console.log(error);
+        throw error;
+    }
+}

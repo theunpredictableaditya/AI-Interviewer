@@ -1,7 +1,11 @@
 import React from "react";
 import "../Styles/Technical.scss";
+import { useAuth } from "../../Auth/Hooks/useAuth";
 
 const Technical = () => {
+  const {questions} = useAuth();
+  const technicalQuestions = questions.technicalQuestion;
+
   return (
     <div className="technical-page route">
       <div className="technical-hero">
@@ -21,11 +25,11 @@ const Technical = () => {
         </p>
       </div>
       <div className="questions-container">
-        <div className="each-question">
-          <div className="topic">SYSTEM DESIGN AND SCALABILITY</div>
+        {technicalQuestions.map((item) => (
+        <div className="each-question" key={item._id}>
+          <div className="topic">{item.topic}</div>
           <div className="question">
-            How would you design a rate-limiting service for a global API
-            platform like Stripe?
+            {item.question}
           </div>
           <div className="answer">
             <h5>YOUR IMPLEMENTATION STRATEGY</h5>
@@ -37,54 +41,8 @@ const Technical = () => {
           </div>
           <button>Submit Answer</button>
         </div>
-        <div className="each-question">
-          <div className="topic">SYSTEM DESIGN AND SCALABILITY</div>
-          <div className="question">
-            How would you design a rate-limiting service for a global API
-            platform like Stripe?
-          </div>
-          <div className="answer">
-            <h5>YOUR IMPLEMENTATION STRATEGY</h5>
-            <textarea
-              name="answer"
-              id="answer"
-              placeholder="Describe your implementation strategy to solve this problem efficiently."
-            ></textarea>
-          </div>
-          <button>Submit Answer</button>
-        </div>
-        <div className="each-question">
-          <div className="topic">SYSTEM DESIGN AND SCALABILITY</div>
-          <div className="question">
-            How would you design a rate-limiting service for a global API
-            platform like Stripe?
-          </div>
-          <div className="answer">
-            <h5>YOUR IMPLEMENTATION STRATEGY</h5>
-            <textarea
-              name="answer"
-              id="answer"
-              placeholder="Describe your implementation strategy to solve this problem efficiently."
-            ></textarea>
-          </div>
-          <button>Submit Answer</button>
-        </div>
-        <div className="each-question">
-          <div className="topic">SYSTEM DESIGN AND SCALABILITY</div>
-          <div className="question">
-            How would you design a rate-limiting service for a global API
-            platform like Stripe?
-          </div>
-          <div className="answer">
-            <h5>YOUR IMPLEMENTATION STRATEGY</h5>
-            <textarea
-              name="answer"
-              id="answer"
-              placeholder="Describe your implementation strategy to solve this problem efficiently."
-            ></textarea>
-          </div>
-          <button>Submit Answer</button>
-        </div>
+        ))}
+
       </div>
       <div className="bottom">-THANKS FOR CHOOSING US-</div>
     </div>

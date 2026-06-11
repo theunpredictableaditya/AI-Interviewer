@@ -3,7 +3,7 @@ import { useAuth } from './features/Auth/Hooks/useAuth'
 import { Navigate, Outlet} from "react-router-dom"
 
 const ProtectedRoute = () => {
-    const {user, handleGetMe, loading} = useAuth();
+    const {user, handleGetMe, loading, handleGetQuestions} = useAuth();
     const [checked, setChecked] = useState(false)
 
     useEffect(() => {
@@ -11,6 +11,7 @@ const ProtectedRoute = () => {
             async () => {
                 if(!user){
                     const isAuth = await handleGetMe();
+                    const questions = await handleGetQuestions();
                     if(!isAuth){
                         setChecked(true);
                         return;

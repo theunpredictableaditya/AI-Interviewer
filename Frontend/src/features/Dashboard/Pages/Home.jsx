@@ -8,10 +8,11 @@ import { useAuth } from "../../Auth/Hooks/useAuth";
 
 const Home = () => {
   const fileRef = useRef(null);
-  const { user } = useAuth();
+  const { user, questions } = useAuth();
 
   useEffect(() => {
     console.log(user);
+    console.log(questions)
   }, [user])
   
 

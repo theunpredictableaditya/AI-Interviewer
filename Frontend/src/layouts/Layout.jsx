@@ -6,9 +6,9 @@ import Home from '../features/Dashboard/Pages/Home'
 import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
-  useEffect(() => {
-    console.log("hello");
-  }, []);
+  // useEffect(() => {
+  //   console.log("hello");
+  // }, []);
   
   return (
     <div className='layout'>
