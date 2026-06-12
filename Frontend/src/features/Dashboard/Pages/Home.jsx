@@ -1,14 +1,18 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import upload from "../../../assets/upload.svg";
 import technical from "../../../assets/technical.svg";
 import behavioral from "../../../assets/behavioral.svg";
 import mock from "../../../assets/mock.svg";
 import "../Styles/Home.scss";
 import { useAuth } from "../../Auth/Hooks/useAuth";
+import { useNavigate } from "react-router-dom"
 
 const Home = () => {
+  const navigate = useNavigate();
   const fileRef = useRef(null);
-  const { user, questions } = useAuth();
+  const { user, questions, handleParsePDF } = useAuth();
+  const [PDF, setPDF] = useState(null);
+  const [preview, setPreview] = useState(null);
 
   useEffect(() => {
     console.log(user);
@@ -19,6 +23,29 @@ const Home = () => {
   const openFile = () => {
     fileRef.current.click();
   };
+
+  const handleFile = (event) => {
+
+    const file = event.target.files[0];
+    console.log(file);
+
+    if(file){
+
+      setPDF(event.target.files[0]);
+
+      setPreview(URL.createObjectURL(file));
+    }
+  }
+
+  const parsePDF = async() => {
+    const formData = new FormData();
+
+    formData.append("resume", PDF);
+
+    const response = await handleParsePDF(formData);
+
+    console.log(response);
+  }
 
   return (
     <div className="home-page route">
@@ -33,11 +60,11 @@ const Home = () => {
             decode your experience to generate tailored high-fidelity questions.
           </div>
           <div className="buttons">
-            <input type="file" ref={fileRef} name="resume" id="resume" hidden />
+            <input type="file" ref={fileRef} name="resume" id="resume" hidden onChange={handleFile}/>
             <button className="browse-files" onClick={openFile}>
               Browse Files
             </button>
-            <button className="generate-questions">Generate Questions</button>
+            <button className="generate-questions" onClick={parsePDF}>Generate Questions</button>
           </div>
         </div>
         <div className="right">
@@ -66,7 +93,7 @@ const Home = () => {
         <div className="top">ACCELERATOR</div>
         <div className="topic">Quick Actions</div>
         <div className="cards">
-          <div className="card">
+          <div className="card" onClick={()=>{navigate("/dashboard/technical")}}>
             <div className="cardTopicImg">
               <img src={technical} alt="technical" />
             </div>
@@ -77,7 +104,7 @@ const Home = () => {
             </div>
             <h4 className="action">START TRAINING</h4>
           </div>
-          <div className="card">
+          <div className="card" onClick={()=>{navigate("/dashboard/behavioral")}}>
             <div className="cardTopicImg">
               <img src={behavioral} alt="behavioral" />
             </div>
@@ -88,7 +115,7 @@ const Home = () => {
             </div>
             <h4 className="action">PRACTICE RESPONSES</h4>
           </div>
-          <div className="card">
+          <div className="card" onClick={()=>{navigate("/dashboard/mock")}}>
             <div className="cardTopicImg">
               <img src={mock} alt="mock" />
             </div>

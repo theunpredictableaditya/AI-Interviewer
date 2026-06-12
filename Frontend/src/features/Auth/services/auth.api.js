@@ -71,3 +71,16 @@ export const getQuestions = async () => {
         throw error;
     }
 }
+
+export const  parsePDF = async (formData) => {
+    try {
+        const response = await api.post("/api/parse/parsePDF", formData, {headers: {
+            'Content-Type': 'multipart/form-data'
+        }})
+
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;   
+    }
+}

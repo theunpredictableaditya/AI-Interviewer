@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../auth.context";
-import { register, login, logout, getMe, getQuestions } from "../services/auth.api.js";
+import { register, login, logout, getMe, getQuestions, parsePDF } from "../services/auth.api.js";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -100,11 +100,26 @@ export const useAuth = () => {
       // console.log(data);
 
       setQuestions(data.data);
-      true;
+      return true;
     } catch(error) {
       setUser(null);
       return false;
     }finally {
+      setLoading(false);
+    }
+  }
+
+  const handleParsePDF = async (formData) => {
+    setLoading(true);
+    try {
+      const data = await parsePDF(formData);
+
+      setQuestions(data.data);
+      return true;
+    } catch (error) {
+      setQuestions(null);
+      return false;
+    } finally {
       setLoading(false);
     }
   }
@@ -117,6 +132,7 @@ export const useAuth = () => {
     handleLogin,
     handleLogout,
     handleGetMe,
-    handleGetQuestions
+    handleGetQuestions,
+    handleParsePDF
   };
 };
