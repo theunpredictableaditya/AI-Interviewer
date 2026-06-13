@@ -52,6 +52,37 @@ const response = await ai.models.generateContent({
   return technicalQuestion;
 }
 
+const interviewReportSchema = z.object({
+  overallScore: z
+    .number()
+    .min(0, "Score cannot be less than 0")
+    .max(100, "Score cannot be greater than 100"),
+
+  answerQuality: z.object({
+    rating: z.enum(["Poor", "Average", "Good", "Excellent"]),
+    feedback: z.string().min(10, "Feedback should be descriptive"),
+  }),
+
+  clarityAndCommunication: z.object({
+    rating: z.enum(["Poor", "Average", "Good", "Excellent"]),
+    feedback: z.string().min(10),
+  }),
+
+  technicalAccuracy: z.object({
+    rating: z.enum(["Poor", "Average", "Good", "Excellent"]),
+    feedback: z.string().min(10),
+  }),
+
+  conciseness: z.object({
+    rating: z.enum(["Too Short", "Optimal", "Too Long"]),
+    feedback: z.string().min(10),
+  }),
+
+  skillLevel: z.enum(["Beginner", "Intermediate", "Advanced"]),
+
+  summary: z.string().min(20, "Summary should be meaningful"),
+});
+
 const generateBehavioralQuestion = async (resumeText) => {
   let behavioralQuestion;
   const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
@@ -97,37 +128,80 @@ ${resumeText}`;
   return behavioralQuestion;
 }
 
-export {
-  generateTechnicalQuestion,
-  generateBehavioralQuestion
+const geminiAnswerReview = async (userAnswer, questionAttempted ) => {
+  let report;
+  const ai= new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+  const answerReportPrompt = `You are an expert technical interviewer and evaluator.
+
+Return ONLY valid JSON. Do NOT include any explanation, markdown, headings, or extra text.
+
+The output must strictly follow this format:
+{
+"overallScore": number,
+"answerQuality": {
+"rating": "Poor" | "Average" | "Good" | "Excellent",
+"feedback": "string"
+},
+"clarityAndCommunication": {
+"rating": "Poor" | "Average" | "Good" | "Excellent",
+"feedback": "string"
+},
+"technicalAccuracy": {
+"rating": "Poor" | "Average" | "Good" | "Excellent",
+"feedback": "string"
+},
+"conciseness": {
+"rating": "Too Short" | "Optimal" | "Too Long",
+"feedback": "string"
+},
+"skillLevel": "Beginner" | "Intermediate" | "Advanced",
+"summary": "string"
 }
 
-/*
-You are an expert technical interviewer. I will provide you with a candidate's resume text. 
-  
-Your task is to analyze the skills, projects, and work experience mentioned and generate a structured list of exactly 10 to 15 highly relevant technical interview questions. 
+Rules:
 
-Guidelines:
-- Create a specific 'topic' for each question (e.g., 'System Design', 'React.js State Management', 'Database Optimization').
-- The 'question' should be challenging and directly test the candidate's practical understanding of the technologies they claim to know. Avoid generic definition questions.
+* "overallScore" must be a number between 0 and 100.
+* All "rating" fields must EXACTLY match the allowed enum values.
+* Each "feedback" must be at least 10 characters long and meaningful.
+* "summary" must be at least 20 characters long.
+* Do NOT add extra fields.
+* Do NOT include trailing commas.
+* Ensure the output is valid JSON parsable by JSON.parse().
 
-Here is the candidate's resume text:
-"""
-${resumeText}
-"""
-*/
+Evaluation Guidelines:
 
-/*
-You are an expert HR and behavioral interviewer. I will provide you with a candidate's resume text. 
-  
-  Your task is to analyze their career progression, past roles, and overall experience to generate a structured list of exactly 10 to 15 behavioral interview questions tailored to their background.
-  
-  Guidelines:
-  - Create a specific 'topic' for each question (e.g., 'Conflict Resolution', 'Leadership & Ownership', 'Adaptability', 'Time Management').
-- Frame the 'question' to elicit situational responses (e.g., "Tell me about a time when...", "Describe a situation where...").
+* Evaluate based on relevance, clarity, correctness, and completeness.
+* Be strict but fair, like a real interviewer.
+* Penalize vague, incorrect, or incomplete answers.
+* Reward structured, accurate, and clear explanations.
 
-Here is the candidate's resume text:
-"""
-${resumeText}
-"""
-*/
+Input:
+Question: ${questionAttempted}
+Answer: ${userAnswer}
+`;
+
+  const response = await ai.models.generateContent({
+  model: "gemini-3.1-flash-lite",
+  contents: behavioralQuestionPrompt,
+  config: {
+    text: {
+      mimeType: "application/json", schema: zodToJsonSchema(interviewReportSchema)
+    }
+  }
+  });
+
+  try {
+    report = interviewReportSchema.parse(JSON.parse(response.text));
+  } catch (error) {
+    console.log("Error Occured While Parsing the AI Output");
+    throw new apiError(409, "Error Occured while generating output")
+  }
+
+  return report;
+}
+
+export {
+  generateTechnicalQuestion,
+  generateBehavioralQuestion,
+  geminiAnswerReview
+}

@@ -6,7 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from '../utils/apiError.js';
 import { apiResponse } from '../utils/apiResponse.js';
 import { interviewModel } from "../models/interview.model.js";
-import { generateBehavioralQuestion, generateTechnicalQuestion } from "../services/ai.services.js";
+import { generateBehavioralQuestion, generateTechnicalQuestion, geminiAnswerReview } from "../services/ai.services.js";
 
 /**
  * @access Public 
@@ -66,6 +66,28 @@ const getQuestions = asyncHandler(async(req, res) => {
     res
     .status(200)
     .json(new apiResponse(200, interview, "Interview Questions Returned Successfully"));
+})
+
+/** 
+ * @access Public
+ * @description Generates a simple report on the basis of the answer given by the user
+*/
+const generateAnswerReport = asyncHandler(async(req, res) => {
+    const {userAnswer, questionAttempted} = req.body;
+
+    if(!userAnswer || !questionAttempted){
+        throw new apiError(400, "Answer the Question First");
+    }
+
+    const report = await geminiAnswerReview(userAnswer, questionAttempted);
+
+    if(!report){
+        throw new apiError(400, "Can't Generate Report Of Your Answer");
+    }
+
+    res
+    .status(200)
+    .json(new apiResponse(200, report, "Report Of Your Answer Generated Successfully"));
 })
 
 export {

@@ -2,6 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    scroll-behavior: smooth;
 }
 
 /* Works in Chrome, Edge, Safari */
@@ -26,4 +27,13 @@
 /* Optional corner styling */
 ::-webkit-scrollbar-corner {
   background: #131022;
+}
+
+/* CSS for all the buttons */
+button {
+  transition: 0.2s ease-in-out;
+}
+
+button:hover {
+  scale: 1.02;
 }
