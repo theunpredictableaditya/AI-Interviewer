@@ -1,6 +1,8 @@
 import React from "react";
 import "../Styles/Behavioral.scss";
+import "../Styles/Modal.scss"
 import { useAuth } from "../../Auth/Hooks/useAuth";
+import ReportModal from "../Components/reportModal";
 
 const Behavioral = () => {
 
@@ -44,6 +46,8 @@ const Behavioral = () => {
         ))}
 
       </div>
+
+      <ReportModal/>
     </div>
   );
 };

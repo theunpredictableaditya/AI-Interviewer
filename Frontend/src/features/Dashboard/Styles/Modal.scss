@@ -1,0 +1,91 @@
+.modal {
+  width: 100%;
+  height: auto;
+  background-color: rgba(71, 37, 244, 0.1);
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid #2D2A45;
+  display: flex;
+  flex-direction: column;
+
+  .close{
+    display: flex;
+    justify-content: right;
+    
+    .close-wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(72, 37, 244, 0.142);
+        border-radius: 2px;
+        border: 1px solid #363254;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+    }
+
+    .close-wrapper:hover{
+        scale: 1.02;
+    }
+  }
+
+  .cardsContainer{
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 32px;
+
+    .overallScoreCard{
+        width: 300px;
+        height: 200px;
+        background-color: rgba(71, 37, 244, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        transition: 0.2s ease-in-out;
+    }
+
+    .overallScoreCard:hover{
+      scale: 1.02;
+    }
+
+    .descriptionCards{
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+
+      .card{
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 32px;
+        transition: 0.2s ease-in-out;
+
+        h2{
+          color: #4725F4;
+        }
+
+        .rating{
+          .level{
+            color: #94A3B8;
+          }
+        }
+
+        .feedback{
+          .description{
+            color: #94A3B8;
+          }
+        }
+      }
+
+      .card:hover{
+        scale: 1.01;
+      }
+    }
+  }
+}

@@ -84,3 +84,17 @@ export const  parsePDF = async (formData) => {
         throw error;   
     }
 }
+
+export const answerReport = async (questionAttempted, userAnswer) => {
+    try {
+        const response = await api.get("/api/parse/get-answerReport", {
+            userAnswer,
+            questionAttempted
+        })
+
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}

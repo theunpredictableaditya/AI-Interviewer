@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../auth.context";
-import { register, login, logout, getMe, getQuestions, parsePDF } from "../services/auth.api.js";
+import { register, login, logout, getMe, getQuestions, parsePDF, answerReport } from "../services/auth.api.js";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -119,6 +119,20 @@ export const useAuth = () => {
     } catch (error) {
       setQuestions(null);
       return false;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleGetAnswerReport = async (questionAttempted, userAnswer) => {
+    setLoading(true);
+    try {
+      const data = await answerReport(questionAttempted, userAnswer);
+      console.log(data.data);
+
+      return data.data;
+    } catch (error) {
+      return null;
     } finally {
       setLoading(false);
     }
