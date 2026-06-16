@@ -182,7 +182,7 @@ Answer: ${userAnswer}
 
   const response = await ai.models.generateContent({
   model: "gemini-3.1-flash-lite",
-  contents: behavioralQuestionPrompt,
+  contents: answerReportPrompt,
   config: {
     text: {
       mimeType: "application/json", schema: zodToJsonSchema(interviewReportSchema)

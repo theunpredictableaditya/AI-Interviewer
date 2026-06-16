@@ -92,5 +92,6 @@ const generateAnswerReport = asyncHandler(async(req, res) => {
 
 export {
     parsePDF,
-    getQuestions
+    getQuestions,
+    generateAnswerReport
 };

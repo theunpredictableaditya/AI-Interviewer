@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { getQuestions, parsePDF } from "../controllers/interview.controller.js";
+import { generateAnswerReport, getQuestions, parsePDF } from "../controllers/interview.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const upload = multer({dest: "uploads/"});
@@ -26,6 +26,11 @@ router.route("/parsePDF").post(
 router.route("/get-questions").get(
     verifyJWT,
     getQuestions
+)
+
+router.route("/get-answerReport").get(
+    verifyJWT,
+    generateAnswerReport
 )
 
 export default router;
