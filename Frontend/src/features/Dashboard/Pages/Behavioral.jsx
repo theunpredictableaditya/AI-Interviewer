@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../Styles/Behavioral.scss";
 import "../Styles/Modal.scss"
 import { useAuth } from "../../Auth/Hooks/useAuth";
@@ -6,8 +6,18 @@ import ReportModal from "../Components/reportModal";
 
 const Behavioral = () => {
 
-  const {questions} = useAuth();
+  const {questions, handleGetAnswerReport} = useAuth();
   const behavioralQuestions = questions.behavioralQuestion;
+  const [answers, setAnswers] = useState({})
+
+  const handleSubmit = async(item) => {
+    const questionAttempted = item.question;
+    const userAnswer = answers[item.question];
+
+    const data = await handleGetAnswerReport(questionAttempted, userAnswer);
+
+    console.log(data);
+  }
 
   return (
     <div className="behavioral-page route">
@@ -39,9 +49,15 @@ const Behavioral = () => {
               name="answer"
               id="answer"
               placeholder="Start typing your response using the STAR method (Situation, Task, Action, Result)..."
+              onChange={(e) => {
+                setAnswers({
+                  ...answers,
+                  [item.question]: e.target.value
+                })
+              }}
             ></textarea>
           </div>
-          <button>Submit Answer</button>
+          <button onClick={() => handleSubmit(item)}>Submit Answer</button>
         </div>
         ))}
 

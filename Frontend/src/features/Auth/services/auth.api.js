@@ -86,6 +86,7 @@ export const  parsePDF = async (formData) => {
 }
 
 export const answerReport = async (questionAttempted, userAnswer) => {
+    console.log(questionAttempted, userAnswer)
     try {
         const response = await api.get("/api/parse/get-answerReport", {
             userAnswer,

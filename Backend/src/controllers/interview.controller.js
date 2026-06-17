@@ -73,7 +73,9 @@ const getQuestions = asyncHandler(async(req, res) => {
  * @description Generates a simple report on the basis of the answer given by the user
 */
 const generateAnswerReport = asyncHandler(async(req, res) => {
+    console.log("Hitt")
     const {userAnswer, questionAttempted} = req.body;
+    console.log(userAnswer, questionAttempted)
 
     if(!userAnswer || !questionAttempted){
         throw new apiError(400, "Answer the Question First");

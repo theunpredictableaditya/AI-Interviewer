@@ -125,6 +125,7 @@ export const useAuth = () => {
   }
 
   const handleGetAnswerReport = async (questionAttempted, userAnswer) => {
+    console.log(questionAttempted, userAnswer)
     setLoading(true);
     try {
       const data = await answerReport(questionAttempted, userAnswer);
@@ -147,6 +148,7 @@ export const useAuth = () => {
     handleLogout,
     handleGetMe,
     handleGetQuestions,
-    handleParsePDF
+    handleParsePDF,
+    handleGetAnswerReport
   };
 };
