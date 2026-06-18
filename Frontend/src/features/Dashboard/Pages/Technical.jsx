@@ -1,10 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import "../Styles/Technical.scss";
 import { useAuth } from "../../Auth/Hooks/useAuth";
+import ReportModal from "../Components/reportModal";
 
 const Technical = () => {
-  const {questions} = useAuth();
+  const {questions, handleGetAnswerReport} = useAuth();
   const technicalQuestions = questions.technicalQuestion;
+  const [answers, setAnswers] = useState({})
+  const [aiReport, setAiReport] = useState(null)
+  const [showTechnical, setShowTechnical] = useState(true)
+
+  const handleSubmit = async(item) => {
+    const questionAttempted = item.question;
+    const userAnswer = answers[item.question];
+
+    const data = await handleGetAnswerReport(questionAttempted, userAnswer);
+    
+    setAiReport(data);
+    setShowTechnical(false);
+  }
 
   return (
     <div className="technical-page route">
@@ -24,7 +38,7 @@ const Technical = () => {
           competencies.
         </p>
       </div>
-      <div className="questions-container">
+      <div className={`questions-container ${(showTechnical === false)? "hidden" : ""}`}>
         {technicalQuestions.map((item) => (
         <div className="each-question" key={item._id}>
           <div className="topic">{item.topic}</div>
@@ -37,13 +51,20 @@ const Technical = () => {
               name="answer"
               id="answer"
               placeholder="Describe your implementation strategy to solve this problem efficiently."
+              onChange={(e) => {
+                setAnswers({
+                  ...answers,
+                  [item.question]: e.target.value
+                })
+              }}
             ></textarea>
           </div>
-          <button>Submit Answer</button>
+          <button onClick={() => handleSubmit(item)}>Submit Answer</button>
         </div>
         ))}
 
       </div>
+      {aiReport &&  <ReportModal data={aiReport} setShowSection={setShowTechnical}/>}
       <div className="bottom">-THANKS FOR CHOOSING US-</div>
     </div>
   );

@@ -125,17 +125,17 @@ export const useAuth = () => {
   }
 
   const handleGetAnswerReport = async (questionAttempted, userAnswer) => {
-    console.log(questionAttempted, userAnswer)
-    setLoading(true);
+    // console.log(questionAttempted, userAnswer)
+    // setLoading(true);   
     try {
       const data = await answerReport(questionAttempted, userAnswer);
-      console.log(data.data);
+      // console.log(data.data);
 
       return data.data;
     } catch (error) {
       return null;
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   }
 

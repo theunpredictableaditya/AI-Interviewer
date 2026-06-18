@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Styles/Behavioral.scss";
 import "../Styles/Modal.scss"
 import { useAuth } from "../../Auth/Hooks/useAuth";
@@ -9,14 +9,18 @@ const Behavioral = () => {
   const {questions, handleGetAnswerReport} = useAuth();
   const behavioralQuestions = questions.behavioralQuestion;
   const [answers, setAnswers] = useState({})
+  const [aiReport, setAiReport] = useState(null)
+  const [showBehavioral, setShowBehavioral] = useState(true)
 
   const handleSubmit = async(item) => {
     const questionAttempted = item.question;
     const userAnswer = answers[item.question];
 
     const data = await handleGetAnswerReport(questionAttempted, userAnswer);
-
     console.log(data);
+
+    setAiReport(data);
+    setShowBehavioral(false);
   }
 
   return (
@@ -34,7 +38,7 @@ const Behavioral = () => {
         </p>
       </div>
 
-      <div className="questions-container">
+      <div className={`questions-container ${(showBehavioral === false)? "hidden" : ""}`}>
         {behavioralQuestions.map((item) => (
         <div className="each-question" key={item._id}>
           <div className="topic">
@@ -63,7 +67,9 @@ const Behavioral = () => {
 
       </div>
 
-      <ReportModal/>
+        {aiReport && 
+      <ReportModal data={aiReport} setShowSection={setShowBehavioral}/>
+        }
     </div>
   );
 };

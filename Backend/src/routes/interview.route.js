@@ -28,7 +28,7 @@ router.route("/get-questions").get(
     getQuestions
 )
 
-router.route("/get-answerReport").get(
+router.route("/get-answerReport").post(
     verifyJWT,
     generateAnswerReport
 )
