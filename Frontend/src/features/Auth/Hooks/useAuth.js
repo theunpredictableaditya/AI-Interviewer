@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../auth.context";
-import { register, login, logout, getMe, getQuestions, parsePDF, answerReport } from "../services/auth.api.js";
+import { register, login, logout, getMe, getQuestions, parsePDF, answerReport, generateSpeech } from "../services/auth.api.js";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -139,6 +139,16 @@ export const useAuth = () => {
     }
   }
 
+  const handleGenerateSpeech = async(questionText) => {
+    try {
+      const audioUrl = await generateSpeech(questionText);
+
+      return audioUrl;
+    } catch (error) {
+      return null;     
+    }
+  }
+
   return {
     user,
     questions,
@@ -149,6 +159,7 @@ export const useAuth = () => {
     handleGetMe,
     handleGetQuestions,
     handleParsePDF,
-    handleGetAnswerReport
+    handleGetAnswerReport,
+    handleGenerateSpeech
   };
 };

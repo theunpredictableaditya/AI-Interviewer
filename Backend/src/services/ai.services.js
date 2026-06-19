@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { apiError } from "../utils/apiError.js";
+import { createWavHeader } from "./buffer.services.js";
 
 
 
@@ -200,8 +201,40 @@ Answer: ${userAnswer}
   return report;
 }
 
+const questionToSpeech = async (questionText) => {
+  try {
+    const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.1-flash-tts-preview",
+      contents: questionText,
+      config: {
+        responseModalities: ['AUDIO'],
+        speechConfig: {
+          voiceConfig: {
+            prebuiltVoiceConfig: {
+              voiceName: 'Aoede'
+            }
+          }
+        }
+      }
+    })
+
+    const base64Audio = response.candidates[0].content.parts[0].inlineData.data;
+
+    const audioBuffer = Buffer.from(base64Audio, 'base64');
+
+    const playableWavBuffer = createWavHeader(audioBuffer, 24000)
+
+    return playableWavBuffer;
+  } catch (error) {
+    throw new apiError(500, "Error Occured While Generating Audio Buffer");
+  }
+}
+
 export {
   generateTechnicalQuestion,
   generateBehavioralQuestion,
-  geminiAnswerReview
+  geminiAnswerReview,
+  questionToSpeech
 }

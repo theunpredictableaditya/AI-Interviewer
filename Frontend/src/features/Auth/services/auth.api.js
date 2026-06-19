@@ -99,3 +99,21 @@ export const answerReport = async (questionAttempted, userAnswer) => {
         throw error;
     }
 }
+
+export const generateSpeech = async (questionText) => {
+    try {
+        const response = await api.post("/api/parse/generate-speech", {
+            questionText
+        }, {
+            responseType: 'blob'
+        });
+
+        const audioBlob = response.data;
+        const audioUrl = URL.createObjectURL(audioBlob);
+        
+        return audioUrl;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}

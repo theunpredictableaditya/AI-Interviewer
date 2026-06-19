@@ -6,7 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from '../utils/apiError.js';
 import { apiResponse } from '../utils/apiResponse.js';
 import { interviewModel } from "../models/interview.model.js";
-import { generateBehavioralQuestion, generateTechnicalQuestion, geminiAnswerReview } from "../services/ai.services.js";
+import { generateBehavioralQuestion, generateTechnicalQuestion, geminiAnswerReview, questionToSpeech } from "../services/ai.services.js";
 
 /**
  * @access Public 
@@ -92,8 +92,36 @@ const generateAnswerReport = asyncHandler(async(req, res) => {
     .json(new apiResponse(200, report, "Report Of Your Answer Generated Successfully"));
 })
 
+/**
+ * @access Public
+ * @description Generates the audio of the question that is to be asked
+ */
+    const generateSpeech = asyncHandler(async(req, res) => {
+        const {questionText} = req.body;
+        
+        if(!questionText) {
+            throw new apiError(400, "No Text Found");
+        }
+
+        let audioBuffer;
+
+        try {
+            audioBuffer = await questionToSpeech(questionText);
+        } catch (error) {
+        throw new apiError(400, "Error occured while processing audio"); 
+        }
+
+        if(!audioBuffer){
+            throw new apiError(400, "Can't get audio buffer");
+        }
+
+        res.set('Content-Type', 'audio/wav');
+        res.send(audioBuffer);
+    })
+
 export {
     parsePDF,
     getQuestions,
-    generateAnswerReport
+    generateAnswerReport,
+    generateSpeech
 };
