@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { generateAnswerReport, generateMockQuestions, generateSpeech, getQuestions, parsePDF } from "../controllers/interview.controller.js";
+import { evaluateMockTestController, generateAnswerReport, generateMockQuestions, generateSpeech, getQuestions, parsePDF } from "../controllers/interview.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const upload = multer({dest: "uploads/"});
@@ -56,6 +56,16 @@ router.route("/generate-speech").post(
 router.route("/generate-mock").post(
     verifyJWT,
     generateMockQuestions
+)
+
+/**
+ * @route POST /api/parse/evaluate-mock
+ * @description Mock Evaluation Report is Generated As Per Candidates Mock Test
+ * @access Public
+ */
+router.route("/evaluate-mock").post(
+    verifyJWT,
+    evaluateMockTestController
 )
 
 export default router;

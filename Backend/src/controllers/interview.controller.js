@@ -6,7 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from '../utils/apiError.js';
 import { apiResponse } from '../utils/apiResponse.js';
 import { interviewModel } from "../models/interview.model.js";
-import { generateBehavioralQuestion, generateTechnicalQuestion, geminiAnswerReview, questionToSpeech, generateMocks } from "../services/ai.services.js";
+import { generateBehavioralQuestion, generateTechnicalQuestion, geminiAnswerReview, questionToSpeech, generateMocks, evaluateMockTest } from "../services/ai.services.js";
 
 /**
  * @access Public 
@@ -141,10 +141,33 @@ const generateMockQuestions = asyncHandler(async(req, res) => {
     .json(new apiResponse(200, mockQuestion, "Mock Questions Have Been Generated Successfully"));
 })
 
+/**
+ * @access Public 
+ * @description Generates evaluattion report for the users mock test
+ */
+const evaluateMockTestController = asyncHandler(async(req, res) => {
+    const {mockData} = req.body;
+
+    if(!mockData){
+        throw new apiError(400, "Cannot provide candidates mock data");
+    }
+
+    const evaluatedMock = await evaluateMockTest(mockData);
+
+    if(!evaluatedMock){
+        throw new apiError(400, "Error Occured While Evaluating Your Mock Test");
+    }
+
+    res
+    .status(200)
+    .json(new apiResponse(200, evaluatedMock, "Mock Evaluation Completed Successfully"));
+})
+
 export {
     parsePDF,
     getQuestions,
     generateAnswerReport,
     generateSpeech,
-    generateMockQuestions
+    generateMockQuestions,
+    evaluateMockTestController
 };

@@ -45,6 +45,66 @@ const interviewReportSchema = z.object({
 
   summary: z.string().min(20, "Summary should be meaningful"),
 });
+const mockEvaluationSchema = z.object({
+// Executive Summary
+overallScore: z
+.number()
+.min(0, "Score cannot be less than 0")
+.max(100, "Score cannot be greater than 100"),
+
+hiringVerdict: z.enum([
+"Strong Hire",
+"Hire",
+"Borderline",
+"Needs Practice",
+]),
+
+summaryStatement: z
+.string()
+.min(20, "Summary should be a meaningful paragraph")
+.max(500, "Keep summary concise"),
+
+// Skill Metrics
+technicalAccuracy: z.object({
+rating: z.enum(["Poor", "Average", "Good", "Excellent"]),
+feedback: z
+.string()
+.min(10, "Provide specific technical feedback")
+.max(300),
+}),
+
+problemSolving: z.object({
+rating: z.enum(["Poor", "Average", "Good", "Excellent"]),
+feedback: z
+.string()
+.min(10, "Explain how the candidate approached the problem")
+.max(300),
+}),
+
+clarityInAnswer: z.object({
+rating: z.enum(["Poor", "Average", "Good", "Excellent"]),
+feedback: z
+.string()
+.min(10, "Comment on the communication style")
+.max(300),
+}),
+
+// Actionable Insights
+topStrengths: z
+.array(z.string().min(3))
+.min(1, "At least one strength must be identified")
+.max(3, "Keep strengths concise (max 3)"),
+
+areasOfImprovement: z
+.array(z.string().min(3))
+.min(1, "At least one area of improvement must be identified")
+.max(3, "Keep improvements focused (max 3)"),
+
+adviceToImprove: z
+.array(z.string().min(5))
+.min(1, "Provide at least one actionable piece of advice")
+.max(5),
+});
 
 const generateTechnicalQuestion = async (resumeText) => {
   let technicalQuestion;
@@ -307,10 +367,146 @@ ${resumeText}
     return mockQuestion;
 }
 
+const evaluateMockTest = async (mockData) => {
+  let mockQuestionEvaluation;
+
+  let ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+
+  const mockEvaluationPrompt = `You are an expert technical interviewer and evaluator.
+
+Your task is to evaluate a candidate’s mock test responses based on the provided array of question-answer pairs.
+
+Return ONLY valid JSON. Do NOT include any explanation, markdown, headings, or extra text.
+
+The output must strictly follow this format:
+{
+"overallScore": number,
+"hiringVerdict": "Strong Hire" | "Hire" | "Borderline" | "Needs Practice",
+"summaryStatement": "string",
+"technicalAccuracy": {
+"rating": "Poor" | "Average" | "Good" | "Excellent",
+"feedback": "string"
+},
+"problemSolving": {
+"rating": "Poor" | "Average" | "Good" | "Excellent",
+"feedback": "string"
+},
+"clarityInAnswer": {
+"rating": "Poor" | "Average" | "Good" | "Excellent",
+"feedback": "string"
+},
+"topStrengths": ["string"],
+"areasOfImprovement": ["string"],
+"adviceToImprove": ["string"]
+}
+
+Input Format:
+An array of objects:
+[
+{
+"question": "string",
+"answer": "string"
+}
+]
+
+Strict Evaluation Rules:
+
+* Evaluate answers holistically across all questions.
+* Consider:
+
+  * Correctness and depth of technical knowledge.
+  * Logical thinking and approach to solving problems.
+  * Clarity, structure, and communication of answers.
+* Do NOT assume missing information — evaluate only what is written.
+* Penalize vague, generic, or incorrect answers.
+* Reward precise, well-structured, and example-driven answers.
+
+Scoring Guidelines:
+
+* overallScore must be between 0 and 100.
+* Use this rough mapping:
+
+  * 85–100 → Strong Hire
+  * 70–84 → Hire
+  * 50–69 → Borderline
+  * 0–49 → Needs Practice
+* Ensure consistency between score and verdict.
+
+Rating Guidelines:
+
+* Poor → Major gaps, incorrect or missing understanding.
+* Average → Basic understanding but lacks depth or clarity.
+* Good → Solid understanding with minor gaps.
+* Excellent → Strong, precise, and well-explained answers.
+
+Field-Specific Instructions:
+
+* summaryStatement:
+
+  * Must be a concise but meaningful paragraph (minimum 20 characters).
+  * Summarize overall performance, strengths, and weaknesses.
+
+* technicalAccuracy.feedback:
+
+  * Mention correctness of answers and depth of knowledge.
+
+* problemSolving.feedback:
+
+  * Evaluate how the candidate approached questions and structured solutions.
+
+* clarityInAnswer.feedback:
+
+  * Evaluate communication, structure, and readability.
+
+* topStrengths:
+
+  * Provide 1 to 3 concise strengths.
+
+* areasOfImprovement:
+
+  * Provide 1 to 3 focused weaknesses.
+
+* adviceToImprove:
+
+  * Provide actionable, practical suggestions.
+
+Validation Requirements:
+
+* Output must be a valid JSON object.
+* No trailing commas.
+* No comments.
+* No extra keys.
+* Do NOT wrap the output in backticks or code blocks.
+
+Mock Test Responses:
+${JSON.stringify(mockData)}
+`;
+
+  const response = await ai.models.generateContent({
+    model: "gemini-3.1-flash-lite",
+    contents: mockEvaluationPrompt,
+    config: {
+      text: {
+        mimeType: "application/json", schema: zodToJsonSchema(mockEvaluationSchema)
+      }
+    }
+  })
+
+  try {
+    mockQuestionEvaluation = mockEvaluationSchema.parse(JSON.parse(response.text));
+  } catch (error) {
+    console.log("Error Occured While Parsing the AI Output");
+    throw new apiError(409, "Error Occured while generating output")
+  }
+
+  return mockQuestionEvaluation;
+}
+
 export {
   generateTechnicalQuestion,
   generateBehavioralQuestion,
   geminiAnswerReview,
   questionToSpeech,
-  generateMocks
+  generateMocks,
+  evaluateMockTest
 }
