@@ -11,48 +11,10 @@ const questionSchema = z.object({
   question: z.string().describe("Question to be asked from the domain in order to judge the capability of the candidate in a particular domain")
 })
 
-const technicalQuestionSchema = z.array(questionSchema);
-const behavioralQuestionSchema = z.array(questionSchema);
-
-const generateTechnicalQuestion = async (resumeText) => {
-  let technicalQuestion;
-  const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
-  const technicalQuestionPrompt = `You are an expert technical interviewer.
-
-Return ONLY valid JSON. Do NOT include any explanation, markdown, headings, or extra text.
-
-The output must strictly follow this format:
-[
-  {
-    "topic": "string",
-    "question": "string"
-  }
-]
-
-Generate 10 to 15 items.
-
-Resume:
-${resumeText}`;
-const response = await ai.models.generateContent({
-  model: "gemini-3.1-flash-lite",
-  contents: technicalQuestionPrompt,
-  config: {
-    text: {
-        mimeType: "application/json", schema: zodToJsonSchema(technicalQuestionSchema)
-      }
-    }
-  });
-  
-  try {
-    technicalQuestion = technicalQuestionSchema.parse(JSON.parse(response.text));
-  } catch (error) {
-    console.log("Error Occured While Parsing the AI Output");
-    throw new apiError(409, "Error Occured while generating output");
-  }
-  
-  return technicalQuestion;
-}
-
+// const technicalQuestionSchema = z.array(questionSchema);
+// const behavioralQuestionSchema = z.array(questionSchema);
+// const mockQuestionSchema = z.array(questionSchema);
+const completeQuestionSchema = z.array(questionSchema);
 const interviewReportSchema = z.object({
   overallScore: z
     .number()
@@ -84,6 +46,46 @@ const interviewReportSchema = z.object({
   summary: z.string().min(20, "Summary should be meaningful"),
 });
 
+const generateTechnicalQuestion = async (resumeText) => {
+  let technicalQuestion;
+  const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+  const technicalQuestionPrompt = `You are an expert technical interviewer.
+
+Return ONLY valid JSON. Do NOT include any explanation, markdown, headings, or extra text.
+
+The output must strictly follow this format:
+[
+  {
+    "topic": "string",
+    "question": "string"
+  }
+]
+
+Generate 10 to 15 items.
+
+Resume:
+${resumeText}`;
+const response = await ai.models.generateContent({
+  model: "gemini-3.1-flash-lite",
+  contents: technicalQuestionPrompt,
+  config: {
+    text: {
+        mimeType: "application/json", schema: zodToJsonSchema(completeQuestionSchema)
+      }
+    }
+  });
+  
+  try {
+    technicalQuestion = completeQuestionSchema.parse(JSON.parse(response.text));
+  } catch (error) {
+    console.log("Error Occured While Parsing the AI Output");
+    throw new apiError(409, "Error Occured while generating output");
+  }
+  
+  return technicalQuestion;
+}
+
+
 const generateBehavioralQuestion = async (resumeText) => {
   let behavioralQuestion;
   const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
@@ -114,13 +116,13 @@ ${resumeText}`;
     contents: behavioralQuestionPrompt,
     config: {
       text: {
-        mimeType: "application/json", schema: zodToJsonSchema(behavioralQuestionSchema)
+        mimeType: "application/json", schema: zodToJsonSchema(completeQuestionSchema)
       }
     }
   });
   
   try {
-    behavioralQuestion = behavioralQuestionSchema.parse(JSON.parse(response.text));
+    behavioralQuestion = completeQuestionSchema.parse(JSON.parse(response.text));
   } catch (error) {
     console.log("Error Occured While Parsing the AI Output");
     throw new apiError(409, "Error Occured while generating output")
@@ -232,9 +234,83 @@ const questionToSpeech = async (questionText) => {
   }
 }
 
+const generateMocks = async (resumeText) => {
+  let mockQuestion;
+    const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+
+    const mockQuestionPrompt = `You are an expert technical assessment designer.
+
+Your task is to generate a mock test consisting of exactly 5 high-quality questions based on the provided resume.
+
+Return ONLY valid JSON. Do NOT include any explanation, markdown, headings, or extra text.
+
+The output must strictly follow this format:
+[
+{
+"topic": "string",
+"question": "string"
+}
+]
+
+Strict Rules:
+
+* Generate exactly 5 questions (not more, not less).
+* Each "topic" must represent a clear technical domain derived from the resume (e.g., "React", "Node.js", "MongoDB", "System Design", "JavaScript").
+* Each "question" must:
+
+  * Be suitable for a mock test environment (practical, problem-solving, or scenario-based).
+  * Be clear, structured, and test real-world application of knowledge.
+  * Avoid simple theory or definition-based questions.
+  * Avoid yes/no questions.
+  * Be answerable in a written or coding format.
+* At least:
+
+  * 2 questions must be scenario-based (real-world problems).
+  * 2 questions must involve implementation or coding logic.
+* Prioritize topics based on the strongest skills and projects mentioned in the resume.
+* Avoid repeating the same topic unless necessary.
+
+Difficulty Guidelines:
+
+* Questions should range from medium to hard level.
+* Ensure they reflect real mock test standards used in technical assessments.
+
+Validation Requirements:
+
+* Output must be a valid JSON array.
+* No trailing commas.
+* No comments.
+* No extra keys.
+* Do NOT wrap the output in backticks or code blocks.
+
+Resume:
+${resumeText}
+`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.1-flash-lite",
+      contents: mockQuestionPrompt,
+      config: {
+        text: {
+          mimeType: "application/json", schema: zodToJsonSchema(completeQuestionSchema)
+        }
+      }
+    })
+
+    try {
+      mockQuestion = completeQuestionSchema.parse(JSON.parse(response.text));
+    } catch (error) {
+      console.log("Error Occured While Parsing the AI Output");
+      throw new apiError(409, "Error Occured while generating output")
+    }
+
+    return mockQuestion;
+}
+
 export {
   generateTechnicalQuestion,
   generateBehavioralQuestion,
   geminiAnswerReview,
-  questionToSpeech
+  questionToSpeech,
+  generateMocks
 }

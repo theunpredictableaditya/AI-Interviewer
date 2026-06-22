@@ -6,7 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from '../utils/apiError.js';
 import { apiResponse } from '../utils/apiResponse.js';
 import { interviewModel } from "../models/interview.model.js";
-import { generateBehavioralQuestion, generateTechnicalQuestion, geminiAnswerReview, questionToSpeech } from "../services/ai.services.js";
+import { generateBehavioralQuestion, generateTechnicalQuestion, geminiAnswerReview, questionToSpeech, generateMocks } from "../services/ai.services.js";
 
 /**
  * @access Public 
@@ -119,9 +119,32 @@ const generateAnswerReport = asyncHandler(async(req, res) => {
         res.send(audioBuffer);
     })
 
+/**
+ * @access Public
+ * @description Generates Question For One Round Of Mock Test
+ */
+const generateMockQuestions = asyncHandler(async(req, res) => {
+    const {resumeText} = req.body;
+
+    if(!resumeText) {
+        throw new apiError(400, "Cannot Access User's Resume Data");
+    }
+
+    const mockQuestion = await generateMocks(resumeText);
+
+    if(!mockQuestion){
+        throw new apiError(400, "Error Occured While Generating Mock Questions");
+    }
+
+    res
+    .status(200)
+    .json(new apiResponse(200, mockQuestion, "Mock Questions Have Been Generated Successfully"));
+})
+
 export {
     parsePDF,
     getQuestions,
     generateAnswerReport,
-    generateSpeech
+    generateSpeech,
+    generateMockQuestions
 };
