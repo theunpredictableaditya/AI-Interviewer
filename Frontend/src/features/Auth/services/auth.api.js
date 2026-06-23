@@ -117,3 +117,30 @@ export const generateSpeech = async (questionText) => {
         throw error;
     }
 }
+
+export const generateMock = async (resumeText) => {
+    try {
+        const response = await api.post("/api/parse/generate-mock", {
+            resumeText
+        });
+
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+
+export const evaluateMock = async (mockData) => {
+    try {
+        const response = await api.post("/api/parse/evaluate-mock", {
+            mockData
+        });
+
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}

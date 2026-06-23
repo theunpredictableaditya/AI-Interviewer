@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../auth.context";
-import { register, login, logout, getMe, getQuestions, parsePDF, answerReport, generateSpeech } from "../services/auth.api.js";
+import { register, login, logout, getMe, getQuestions, parsePDF, answerReport, generateSpeech, generateMock, evaluateMock } from "../services/auth.api.js";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -149,6 +149,26 @@ export const useAuth = () => {
     }
   }
 
+  const handleGenerateMock = async(resumeText) => {
+    try {
+      const data = await generateMock(resumeText);
+
+      return data.data; 
+    } catch (error) {
+      return null;
+    }
+  }
+
+  const handleEvaluateMock = async(mockData) => {
+    try {
+      const data = await evaluateMock(mockData);
+
+      return data.data;
+    } catch (error) {
+      return null;
+    }
+  }
+
   return {
     user,
     questions,
@@ -160,6 +180,8 @@ export const useAuth = () => {
     handleGetQuestions,
     handleParsePDF,
     handleGetAnswerReport,
-    handleGenerateSpeech
+    handleGenerateSpeech,
+    handleGenerateMock,
+    handleEvaluateMock
   };
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "../Styles/Mock.scss";
 import aihr from "../../../assets/aihr.svg";
 import microphone from "../../../assets/microphone.svg";
@@ -7,13 +7,25 @@ import { useAuth } from "../../Auth/Hooks/useAuth";
 
 const Mock = () => {
 
-  const {handleGenerateSpeech} = useAuth();
+  const {questions, handleGenerateSpeech, handleGenerateMock} = useAuth();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [mockQuestions, setMockQuestions] = useState(null);
 
   const { transcript } = useSpeechRecognition();
   const startListening = () => SpeechRecognition.startListening({
     continuous: true,
     language: 'en-US'
   });
+
+  // fetches the 5 mock questions whenever the page is reloaded and sets setMockQuestion
+  useEffect(() => {
+    const resumeText = questions.resumeText;
+    (async()=>{
+      const data = await handleGenerateMock(resumeText);
+      setMockQuestions(data);
+    })()
+  }, []) 
+  
 
   const stopListening = () => SpeechRecognition.stopListening();
 
