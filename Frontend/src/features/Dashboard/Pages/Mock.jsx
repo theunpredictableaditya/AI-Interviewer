@@ -8,10 +8,15 @@ import { useAuth } from "../../Auth/Hooks/useAuth";
 const Mock = () => {
 
   const {questions, handleGenerateSpeech, handleGenerateMock} = useAuth();
+  const [showInitialModal, setShowInitialModal] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mockQuestions, setMockQuestions] = useState(null);
+  const [currentQuestion, setCurrentQuestion] = useState("");
+  const [currentQuestionTopic, setCurrentQuestionTopic] = useState("");
+  const [currentAnswer, setCurrentAnswer] = useState("");
+  const [mockData, setMockData] = useState(null);
 
-  const { transcript } = useSpeechRecognition();
+  const { transcript, resetTranscript } = useSpeechRecognition();
   const startListening = () => SpeechRecognition.startListening({
     continuous: true,
     language: 'en-US'
@@ -23,8 +28,16 @@ const Mock = () => {
     (async()=>{
       const data = await handleGenerateMock(resumeText);
       setMockQuestions(data);
+      setCurrentQuestion(data[0].question);
+      setCurrentQuestionTopic(data[0].topic);
     })()
   }, []) 
+
+  const handleInitializeInterview = async() => {
+    setShowInitialModal(false);
+
+    await askQuestion(currentQuestion);
+  }
   
 
   const stopListening = () => SpeechRecognition.stopListening();
@@ -47,18 +60,39 @@ const Mock = () => {
     }
   }
 
+  const handleNextQuestion = async() => {
+
+    const newIndex = currentIndex + 1;
+
+    setMockData({
+      ...mockData,
+      [currentQuestion]: transcript
+    })
+
+    resetTranscript();
+    setCurrentIndex(newIndex);
+    setCurrentQuestion(mockQuestions[newIndex].question);
+    setCurrentQuestionTopic(mockQuestions[newIndex].topic);
+    await askQuestion(mockQuestions[newIndex].question);
+    console.log(currentQuestion);
+  }
+  
+  
+
   return (
     <div className="mock-page route">
+      <div className={`initialModal ${showInitialModal ? "" : "hidden"}`}>
+        <button onClick={async() => await handleInitializeInterview()}>Start Interview</button>
+      </div>
       <div className="left">
         <div className="showAi">
           <div className="ai-image">
             <img src={aihr} alt="aihr" />
           </div>
           <div className="question">
-            <div className="topic">SYSTEM DESIGN</div>
+            <div className="topic">{currentQuestionTopic}</div>
             <h3>
-              How would you architect a real- time analytics dashboard that
-              supports millions of concurrent events per second?
+              {currentQuestion}
             </h3>
           </div>
         </div>
@@ -81,7 +115,7 @@ const Mock = () => {
           <button onClick={startListening}>START SPEAKING</button>
         </div>
         <div className="next-question">
-          <button onClick={async() => { await askQuestion("Hello How are you?, Its me Aditya Gupta and Today I am going to tell you about Some major react issues arrising  these days in developers every day to day life.")}}>Next Question</button>
+          <button onClick={handleNextQuestion}>Next Question</button>
         </div>
       </div>
     </div>

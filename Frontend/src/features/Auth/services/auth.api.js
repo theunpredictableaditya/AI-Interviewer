@@ -101,6 +101,7 @@ export const answerReport = async (questionAttempted, userAnswer) => {
 }
 
 export const generateSpeech = async (questionText) => {
+    console.log("Audio Sent to Fetch")
     try {
         const response = await api.post("/api/parse/generate-speech", {
             questionText
@@ -111,6 +112,7 @@ export const generateSpeech = async (questionText) => {
         const audioBlob = response.data;
         const audioUrl = URL.createObjectURL(audioBlob);
         
+        console.log("Successfully returned url")
         return audioUrl;
     } catch (error) {
         console.log(error);
