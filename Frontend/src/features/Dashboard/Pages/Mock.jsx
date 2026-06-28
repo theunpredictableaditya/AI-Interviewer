@@ -4,10 +4,11 @@ import aihr from "../../../assets/aihr.svg";
 import microphone from "../../../assets/microphone.svg";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useAuth } from "../../Auth/Hooks/useAuth";
+import MockReportModal from "../Components/MockReportModal";
 
 const Mock = () => {
 
-  const {questions, handleGenerateSpeech, handleGenerateMock} = useAuth();
+  const {questions, handleGenerateSpeech, handleGenerateMock, handleEvaluateMock} = useAuth();
   const [showInitialModal, setShowInitialModal] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mockQuestions, setMockQuestions] = useState(null);
@@ -15,6 +16,8 @@ const Mock = () => {
   const [currentQuestionTopic, setCurrentQuestionTopic] = useState("");
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [mockData, setMockData] = useState(null);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [mockInterviewReport, setMockInterviewReport] = useState(null);
 
   const { transcript, resetTranscript } = useSpeechRecognition();
   const startListening = () => SpeechRecognition.startListening({
@@ -61,11 +64,19 @@ const Mock = () => {
   }
 
   const handleNextQuestion = async() => {
-
+    if (!mockQuestions) return;
+    
     const newIndex = currentIndex + 1;
+    
+    if(newIndex >= 5){
+      const data = await handleEvaluateMock(mockData);
+      setMockInterviewReport(() => data);
+      setShowReportModal(true);
+      return;
+    }
 
     setMockData({
-      ...mockData,
+      ...(mockData || {}),
       [currentQuestion]: transcript
     })
 
@@ -76,8 +87,6 @@ const Mock = () => {
     await askQuestion(mockQuestions[newIndex].question);
     console.log(currentQuestion);
   }
-  
-  
 
   return (
     <div className="mock-page route">
@@ -118,6 +127,9 @@ const Mock = () => {
           <button onClick={handleNextQuestion}>Next Question</button>
         </div>
       </div>
+      {showReportModal && (
+        <MockReportModal data={mockInterviewReport} onClose={() => setShowReportModal(false)} />
+      )}
     </div>
   );
 };
